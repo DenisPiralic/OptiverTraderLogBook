@@ -9,7 +9,7 @@
 Research and data analysis have been our main focus the last few days, so much so that we have not had anytime to do anything practical. Thus missed our first deadline yesterday. Luckily, nothing counts until the final deadline next week, so we can start to implement the things we have learnt. And have we learnt a lot!
 
 ## Research
-First, using the information given to us by Optiver, we realised that we were going to have to use a trading strategy called 'Pairs trading'. 
+First, using the information given to us by Optiver, we realised that we were going to have to use a trading strategy called 'pairs trading'. 
 
 A pairs trading stategy involves trading two financial instruments that are highly correlated with each other in order to profit from their relative price. In this case, the highly related ETF and corresponding future contracts.
 
