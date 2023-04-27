@@ -4,7 +4,6 @@
   |----------- | ----------- | ----------- |
   | 12/03/2023 | Main | 53538b5 |
 
-- intro about how we knew nothing to begin with
 
 Research and data analysis have been our main focus the last few days, so much so that we have not had anytime to do anything practical. Thus missed our first deadline yesterday. Luckily, nothing counts until the final deadline next week, so we can start to implement the things we have learnt. And have we learnt a lot!
 
@@ -28,3 +27,4 @@ What traders will do to start with is actually start by choosing the two intrume
 First I calculated midpoint prices between the two intruments, to get an accurate picture of what the market prices would look like. Then used this to see how similar the intruments are. 
 
 Here are the results: 
+
