@@ -49,10 +49,8 @@ So the plan would be to create an implementation of both proportions, and see wh
 
   #mod z-score, we only care about its maginitude of strength
   z_score = |z_score|
-  #see how far it is getting away from our indicator of 1
-  k = z_score - 1
   #multiply by our constant
-  k = k*C
+  k = z_score*C
 
   if k >= 1:
     #definitaly need to buy full amount
@@ -70,9 +68,8 @@ So the plan would be to create an implementation of both proportions, and see wh
 
 
   z_score = |z_score|
-  k = z_score - 1
   #power by our constant, as long as our constant is less than 1 this works.
-  k = k**C
+  k = z_score**C
 
   if k >= 1:
     VolumetoBuy = availbleVolume
@@ -86,7 +83,19 @@ So the plan would be to create an implementation of both proportions, and see wh
 
 ## Implementation
 
-###
+Before implementing the change in volumes a few issues came to mind:
+1. We have an active volume limit of 100
+2. Our current solution buys and sells as soon as it hits our z-score indication, it buys or sells. Meaning the algorithm does not give it a chance to get to our extremer (stronger) values of z.
+3. Our current solution alternates between buying and selling signals. 
+
+Therfore I had to change the design as well as the way that we buy and sell positions.
+
+First. The volume code has been changed that there are 3 seperate thresholds of buying volume. Low, Medium and High.
+The idea is that when the zscore breaks through our indication value and creates a trough, there are only a maximum of three orders put in: 
+
+===============INSERT DIAGRAM================
+
+
 
 
 ## Conclusion

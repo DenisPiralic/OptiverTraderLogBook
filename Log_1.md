@@ -28,4 +28,3 @@ What traders will do to start with is actually start by choosing the two intrume
 First I calculated midpoint prices between the two intruments, to get an accurate picture of what the market prices would look like. Then used this to see how similar the intruments are. 
 
 Here are the results: 
-
