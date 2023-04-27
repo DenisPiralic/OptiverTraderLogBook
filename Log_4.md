@@ -12,8 +12,7 @@ My partner has been tasked with comparing z-scores and has found that the optima
 ![zscore table](./LOG4PICS/z-score.png)
 
 
-
-Thus, I will update this in the new code. 
+Creating a new branch 'volume_development' which has this 
 
 Whilst he compares the most effective moving average pairs, I will try to implement some kind of volume adjustment. 
 
