@@ -46,6 +46,3 @@ b.) in a manor which would invite more competition to a new market
 ### **After the final competition deadline**
 1. Optimise some more
 
-
-
-I'm excited to learn more. 
