@@ -7,7 +7,7 @@ My partner did gather some intelligence concerning the optimal pair of moving av
 
 ![zscore table](./LOG4PICS/movavg.png)
 
-We found that the sweet spot between the short term moving average and the long term moving average is one where they sit at a ratio of 0.05 to one another. And we want the moving average to really show what the market is telling us, so we want to keep the short term as short as possible (without losing its effectiveness), so a moving average of 5 and 100 seemed to be the best choice moving forward. So hopefully I can get that to work with the volume solution.
+We found that the sweet spot between the short-term moving average and the long term moving average is one where they sit at a ratio of 0.05 to one another. And we want the moving average to really show what the market is telling us, so we want to keep the short term as short as possible (without losing its effectiveness), so a moving average of 5 and 100 seemed to be the best choice moving forward. So hopefully I can get that to work with the volume solution.
 
 ![Original](./LOG4PICS/InitialRun.png)
 
@@ -101,22 +101,22 @@ VolumeToOrder = int(VolumeToOrder)
 
 ## Result 2
 
-This is the result
+This is the result.
 
 ![40 BASE](./LOG4PICS/40LOT-new.png)
 
 I think if we go back to the original solution and use a base lot of 30. So we can really use the z-score effectively, since I think this is the best way to bullet proof values. 
 
-Unfortuntely, the results are not the best. 
+Unfortunately, the results are not the best. 
 
 ![30 BASE](./LOG4PICS/30LOT-PA.png)
 
-I believe this is due to the fact that having such a large lot size ask means that some trades won't actually go through because there is not enough volume avaible on the market.
+I believe this is due to the fact that having such a large lot size ask means that some trades won't actually go through because there is not enough volume available on the market.
 
 
 ---
 ## Conclusion
-In the end, I found that the more simple a solution, the more profitable it is. Adam and I decided to look at every single order individually, so speed is important in that situation. 
+In the end, I found that the simpler a solution, the more profitable it is. Adam and I decided to look at every single order individually, so speed is important in that situation. 
 
 Ordering and playing around with too much volume will only lead to an increase risk of things going wrong and prices going out of control.
 
@@ -127,11 +127,11 @@ I am happy with the final product.
 ---
 
 ## Evaluation of goals
-I think that through being obssessed with trading profitability and optimising our solution, we had forgotten one of the other key goals set out in the initial log; trading in such a monor which would invite more competition into the market.
+I think that through being obsessed with trading profitability and optimising our solution, we had forgotten one of the other key goals set out in the initial log; trading in such a manner which would invite more competition into the market.
 
 One way we could do this is by improving liquidity. If we could figure out a way to offer more prices in a profitable manor, and even more volume so that market participants increase. By attracting more traders in the market, you can increase liquidity and make it easier for everyone, including yourself, to buy and sell the ETF and future contracts.
 
-So deffinetly moving forward, it will be key to see how we can split up trades into multiple different signals in a profitable manor, and split up at different price points at high volumes. However, it will need to be noted that the futures contracts have a lot more volume than ETFs. 
+So definitely, moving forward, it will be key to see how we can split up trades into multiple different signals in a profitable manner and split up at different price points at high volumes. However, it will need to be noted that the futures contracts have a lot more volume than ETFs. 
 
 
 ## Next Steps
@@ -142,6 +142,6 @@ For next steps I believe I need to knuckle down on really understanding markets,
 
 Looking back, I have been looking at my logs at a data-science angle. When actually, most of the issues I encountered was figuring out how orders in the market worked. I believe that the key to getting into the tens of thousands of dollars of profit comes down to knowing how to deal with order books and filing them in such a way that we can not only benefit from having a difference in price (some profit) but also setting the pace of the market to allow it to go into a direction which would further benefit our position. 
 
-In thoery I understand why an algorithm would want to compete in such a way, it is just about how I would implement that in a practical way in any simulated market. I think that I will need to know how to control my orders in the future, rather than just filing them and then killing them, hoping for the best. 
+In theory, I understand why an algorithm would want to compete in such a way, it is just about how I would implement that in a practical way in any simulated market. I think that I will need to know how to control my orders in the future, rather than just filing them and then killing them, hoping for the best. 
 
 Adam and I are ready for next year...
