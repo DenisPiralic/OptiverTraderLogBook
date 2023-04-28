@@ -10,7 +10,7 @@ It was odd how they set out the code, most of it was simply an aid for the simul
 
 Therefore, we had no credible algorithm to hand in to Optiver on the final date submission. Adam and I both agreed that this project would be more beneficial to take our time and get a good grasp with how to implement a successful algorithm; no point rushing around and just giving in something that does not actually communicate what we know.
 
-But now we have a very good grasp on the code, and can implement all the things which we want to implement in the code. 
+But now we have a very good grasp on the code and can implement all the things which we want to implement in the code. 
 
 I'm glad we took the time to do things right, even if it did take longer than we expected. Now we're back on track and making good progress towards our goals.
 
@@ -18,9 +18,9 @@ I'm glad we took the time to do things right, even if it did take longer than we
 
 ## How the code works
 
-- The code is written so that the autotrader is completely seperate from the simulation.
+- The code is written so that the autotrader is separate from the simulation.
 
-- It's classed based system; some classes for the autotrader, some for the simulation. Everything runs independantly (just like it would be in an actual market)
+- It's classed based system; some classes for the autotrader, some for the simulation. Everything runs independently (just like it would be in an actual market)
 
 - Every class is updated when the program 'ticks'( a simulated amount of time); the simulation sends information to the autotrader, mostly via the order book (every single order being sent to the simulated market) and then based on each order, our auto trader needs to do something
 
@@ -67,7 +67,7 @@ class AutoTrader(BaseAutoTrader):
 
 ```
 
-They key point to take away from the code is that information from the market comes directly from the class variables themselves. Order ids, current ask/bid prices, volumes, intrument types etc, all get updated within your class. 
+They key point to take away from the code is that information from the market comes directly from the class variables themselves. Order ids, current ask/bid prices, volumes, instrument types etc, all get updated within your class. 
 
 The class procedure which handles this data is mainly in the 
 ```python
@@ -120,7 +120,7 @@ Luckily the algorithm, does this automatically:
 
 ## Implementation
 
-In order to implement our strategy we needed to calculate some key informations each tick:
+In order to implement our strategy, we needed to calculate some key informations each tick:
 - Midpoint prices between ask and bid prices (the market equilibrium)
 - The ratio between the two market equilibriums
 - Calculate the moving average of the ratios
@@ -147,9 +147,9 @@ newratio = pd.Series(self.future_price.iloc[-1]/self.etf_price.iloc[-1])
 self.ratio = pd.concat([self.ratio,newratio], ignore_index=True)
 ```
 
-I chose to use panda series, whilst my partner used normal lists, due to the fact that I though it would be easier to reference things since panda series' indexing is more effecient. 
+I chose to use panda series, whilst my partner used normal lists, since I thought it would be easier to reference things since panda series' indexing is more efficient. 
 
-I also made the code more effecient by adding a new point of ratio each time, rather than re calculating the ratio of the full list of midpoint prices (like it was done before this commit)
+I also made the code more efficient by adding a new point of ratio each time, rather than re calculating the ratio of the full list of midpoint prices (like it was done before this commit)
 
 
 ### Moving Averages
@@ -201,7 +201,7 @@ elif self.zscore_20_5.iloc[-1] > 1:
     self.current_signal = "Sell"
 ```
 
-My partner's solution was then to alternate between buy and sell to mitagate as much risk as possible, and also the volume of the orders are kept at a constant base lot of 10.
+My partner's solution was then to alternate between buy and sell to mitigate as much risk as possible, and also the volume of the orders are kept at a constant base lot of 10.
 
 ## Results
 
