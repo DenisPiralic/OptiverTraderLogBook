@@ -213,5 +213,3 @@ It was very rewarding seeing that our first run of the implementation we wanted 
 1. Review what moving average pairs are most optimal (5 and 20 may not be)
 2. Review what Z-score is the most optimal
 3. Look at a way of manipulating volume for better results.
-
-

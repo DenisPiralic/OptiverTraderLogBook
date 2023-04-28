@@ -33,7 +33,7 @@ Here are 3 different ways that we found volume can be manipulated in order to ac
 
 3. **Adjust trade size based on probability of movement:** Another strategy is to modify your trade size in accordance with the z-score. You would create proportionality between the z-score and the volume of trade. i.e., the (modularly) higher the z-score the greater volume we buy since there is a greater probability that the market will move in our favour; a 'stronger signal' if you will. 
 
-So, since our lot limit is 100. That rules out buying the full availble volume since some trades go up to 10000 lots. So we will try to get a trade size proportional to the probability of movement instead. 
+So, since our lot limit is 100. That rules out buying the full available volume since some trades go up to 10000 lots. So we will try to get a trade size proportional to the probability of movement instead. 
 
 ---
 
@@ -93,27 +93,27 @@ Before implementing the change in volumes a few issues came to mind:
 
 Therefore, I had to change the design as well as the way that we buy and sell positions.
 
-The idea is that when the zscore breaks through our indication value and creates a trough, there are only a maximum of three orders put in at any one troph-time: 
+The idea is that when the zscore breaks through our indication value and creates a trough, there are only a maximum of three orders put in at any one trough-time: 
 
 ![zscore graph](./LOG3PICS/zgraph.png)
 
 Since the auto-trader automatically hedges values for us, it is rather unlickly that our position would exceed the lot limit and a given time, since it allows the buying and selling to cancel out (as long as the base lot size is not very high)
 
-So to implement this, I created a dictionary of data signals. To track what we have ordered on each troph:
+So to implement this, I created a dictionary of data signals. To track what we have ordered on each trough:
 
 ```python
 #see what troph we are located in
-if self.zscore < 0 and self.SellingTroph == True:
-  self.BuyingTroph = True
-  self.SellingTroph = False
+if self.zscore < 0 and self.SellingTrough == True:
+  self.BuyingTrough = True
+  self.SellingTrough = False
   #if we have entered the buying troph, we can make sell trades again
   self.ActiveOrders.update({"StrongSell":False})
   self.ActiveOrders.update({"MediumSell":False})
   self.ActiveOrders.update({"LowSell":False})
 
-elif self.zscore > 0 and self.BuyingTroph == True:
-  self.SellingTroph = True
-  self.BuyingTroph = False
+elif self.zscore > 0 and self.BuyingTrough == True:
+  self.SellingTrough = True
+  self.BuyingTrough = False
   #if we have entered the selling troph, we can make buy trades again
   self.ActiveOrders.update({"StrongBuy":False})
   self.ActiveOrders.update({"MediumBuy":False})
@@ -138,9 +138,9 @@ else:
 VolumeToBuy = int(VolumeToBuy)
 ```
 
-I made the direct proportion constant in such a way that the Base LOT_SIZE is bought at the weakest indicator. Then proportionally goes up as the indicator gets stronger
+I made the direct proportion constant in such a way that the Base LOT_SIZE is bought at the weakest indicator. Then proportionally goes up as the indicator gets stronger.
 
-Then we make it so it only can do each type of these trades once every troph:
+Then we make it so it only can do each type of these trades once every trough:
 
 
 ---
@@ -166,7 +166,7 @@ And of course, this is much worse since when we sell, we would be offering a con
 So it is not as simple as switching. 
 
 ## Next Steps
-Go back to our original autotrader and try to implement volume adjucment but more in line with the original buying and selling strategy; where I think the careful implementation of alternating buy and sell signals is actually very advantagous for a profitibale strategy. 
+Go back to our original autotrader and try to implement volume adjustment but more in line with the original buying and selling strategy; where I think the careful implementation of alternating buy and sell signals is actually very advantageous for a profitable strategy. 
 
 
 ### Resources used: 
