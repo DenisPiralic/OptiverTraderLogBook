@@ -4,13 +4,11 @@ Do you want a trading strategy which is very low risk and high rewards?
 
 Who doesn't! 
 
-Look no further.
-
 Pairs trading is a method of trading the economic connection between two equities. More specifically, two equities that move almost identically, with almost identical prices. 
 
-For example, you might have two companies with the same supply chain which will be impacted by the same economic forces.
+For example, you might have two companies with the same supply chain, which will be impacted by the same economic forces.
 
-Or another example is the correlation between ETFs (Exchange-Traded Funds) and futures contracts. When you buy an ETF, you are essentially buying a basket of securities that represents a specific sector or market. Often ETFs invest in future contracts (agreements to buy or sell an underlying asset at a predetermined price and date in the future.) For example, an oil ETF may hold futures contracts for crude oil. In this way, ETFs and futures can be indirectly related.
+Another example, is the correlation between ETFs (Exchange-Traded Funds) and futures contracts. When you buy an ETF, you are essentially buying a basket of securities that represents a specific sector or market. Often ETFs invest in future contracts (agreements to buy or sell an underlying asset at a predetermined price and date in the future.) Like, an oil ETF may hold futures contracts for crude oil. In this way, ETFs and futures can be indirectly related.
 
 Here is the step-by-step process using python:
 
@@ -114,7 +112,7 @@ Price  1.000000  0.990935
 Price  0.990935  1.000000
 ```
 
-As you can see, the 1.0 relates to the instruments being correlated to themselves (of course that would be 100%) whereas the other number (0.990935) is how correlated they are with each other, youre looking for values as close as you can to 1.0. A general rule of thum is anything above 0.97 is safe.
+As you can see, the 1.0 relates to the instruments being correlated to themselves (of course that would be 100%) whereas the other number (0.990935) is how correlated they are with each other, you're looking for values as close as you can to 1.0. A general rule of thum is anything above 0.97 is safe.
 
 ## 3. Model the spread
 
@@ -136,11 +134,11 @@ You may get something like this:
 
 ![spread of prices](./GUIDEPICS/spread.png)
 
-However, to make the solution more concrete we will use ratio instead. Firstly, ratios tend to have a more consistent distribution over time, whereas the spread can vary significantly based on the levels of the underlying instruments. Secondly, ratios tend to exhibit more stable mean reversion properties over time than spreads, making them more reliable for trading purposes. Finally, using the ratio allows for a more direct comparison between the two instruments, as it accounts for differences in price levels and scales.
+However, to make the solution more concrete we will use ratio instead. Firstly, ratios tend to have a more consistent distribution over time, whereas the spread can vary significantly based on the levels of the underlying instruments. Secondly, ratios tend to exhibit more stable mean reversion properties over time than spreads, making them more reliable for trading purposes.
 
 But bare in mind using ratios over spread may not always be the best approach, espacially if they have a non-linear relationship.
 
-To calculate ratios adn also pop in a line to indicate the average ratio:
+To calculate ratios and a line to indicate the average ratio:
 
 ``` python 
 figure(figsize=(8, 6), dpi=200)
@@ -155,9 +153,9 @@ And you will get something that looks very similar:
 
 ![ratio of prices](./GUIDEPICS/ratios.png)
 
-You will notice that it frequently returns past the mean line, and you as a trader can use this information to make a profit from its garunteed cyclical nature. 
+You will notice that it frequently goes past the mean line, and you as a trader can use this information to make a profit from its garunteed cyclical nature. 
 
-So how can we measure this more accurately; the way it returns to the average. Simple. Using a Z-score. 
+So how can we measure this cyclical nature. Simple. Using a Z-score. 
 
 The Z-score, commonly referred to as the standard score, is a statistical indicator that shows how many standard deviations a data point deviates from the population mean. When calculating the Z-score, the population mean is subtracted from each data point, and the result is divided by the population standard deviation:
 
@@ -196,7 +194,7 @@ You should get something like this:
 
 You can choose, depending on the market, what your z-score threshold is.
 
-## Optimise
+## 4. Trade and Optimise
 
 Now you now one of the most powerful ways to track two stocks on a market. To optimise this solution you could play around with
 
@@ -204,9 +202,9 @@ Now you now one of the most powerful ways to track two stocks on a market. To op
 - How much volume you buy compared to the z-score, because the higher the magnitude of z-score, the lower the risk
 
 ## Evaluation 
-This skill is very useful not only in trading, but also if you want to predict the movement of any two things that are correlated. I would say its usefulness far outweighs the effort in order to learn it. I do however think it is very basic at its core, but most pair-trading strategies come from this one. 
+This skill is very useful not only in trading, but also if you want to predict the movement of any two things that are correlated. I would say its usefulness far outweighs the effort in order to learn it. I do however think it is very basic at its core, but most pair-trading strategies always come back to mean reversion and Z-score.
 
-If you want to keep up to date with the best trading strategies, I recommend looking to the kindness of the people and free information and opinions on public forums such as https://www.forexfactory.com/. Even twitter has amazing resources, like the twitter acount https://twitter.com/pyquantnews
+If you want to keep up to date with the best trading strategies, I recommend looking to the kindness of the people, free information and opinions on public forums such as https://www.forexfactory.com/. Even twitter has amazing resources; like the twitter acount https://twitter.com/pyquantnews
 
 ## Resources used for this guide: 
 - Log_1.md on this repository

@@ -5,16 +5,16 @@
   | 12/03/2023 | Main | 53538b5 |
 
 
-Research and data analysis have been our main focus the last few days, so much so that we have not had anytime to do anything practical. Thus missed our first deadline yesterday. Luckily, nothing counts until the final deadline next week, so we can start to implement the things we have learnt. And have we learnt a lot!
+Research and data analysis have been our focus the last few days, so much so, that we have not had any time to do anything practical. Thus missed our first deadline yesterday. Luckily, nothing counts until the final deadline next week, so we can start to implement the things we have learnt. And have we learnt a lot!
 
 ---
 
 ## Research
 First, using the information given to us by Optiver, we realised that we were going to have to use a trading strategy called 'pairs trading'. 
 
-A pairs trading stategy involves trading two financial instruments that are highly correlated with each other in order to profit from their relative price. In this case, the highly related ETF and corresponding future contracts.
+A pairs trading strategy involves trading two financial instruments that are highly correlated with each other in order to profit from their relative price. In this case, the highly related ETF and corresponding future contracts.
 
-After extensive research, the most helpful sources of information was: 
+After extensive research, the most helpful sources of information were: 
 
 An overview on CMC markets: https://www.cmcmarkets.com/en-gb/trading-guides/pairs-trading
 
@@ -24,9 +24,9 @@ But for a more practical resource, was surprisingly, twitter. Where you would fi
 ## Data Analysis
 ### Correlation
 
-What traders will do to start with is actually start by choosing the two intruments that are highly correlated. Even though the two instruments are given to us, there is no harm in checking their correlation. 
+What traders will do to start with, is start by choosing the two instruments that are highly correlated. Even though the two instruments are given to us, there is no harm in checking their correlation. 
 
-First I calculated midpoint prices between the two intruments using the python package numpy, to get an accurate picture of what the market prices would look like. Then used this to see how similar the intruments are. 
+First, I calculated midpoint prices between the two instruments using the python package numpy, to get an accurate picture of what the market prices would look like. Then used this to see how similar the instruments are. 
 
 ```python
 
@@ -58,7 +58,7 @@ Here are the results:
 
 ### Z-score
 
-When looking on public forums such as forexfactory.com and also looking at that twitter page referenced above, it is clear that **Z-score** will be a big player in tracking the movement of how these financial intruments move.
+When looking on public forums such as forexfactory.com and also looking at that twitter page referenced above, it is clear that **Z-score** will be a big player in tracking the movement of how these financial instruments move.
 
 The Z-score, commonly referred to as the standard score, is a statistical indicator that shows how many standard deviations a data point deviates from the population mean. When calculating the Z-score, the population mean is subtracted from each data point, and the result is divided by the population standard deviation:
 
@@ -88,12 +88,12 @@ df_zscore = (ratio - ratio.mean())/ratio.std()
 
 ```
 
-Through some boundy lines in there, plot it, and you get: 
+Through some boundry lines in there, plot it, and you get: 
 
 ![z-score graph](./LOG1PICS/output.png)
 
 ### Moving averages
-A moving average is a calculation of the average price of an asset over a specified period of time, which is updated as each new data point is added.
+A moving average is a calculation of the average price of an asset over a specified period, which is updated as each new data point is added.
 
 Based on their trading technique and the time frame of their study, traders can determine the moving average's period length. A trader who uses daily charts, for instance, would employ a 50-day or 200-day moving average to spot longer-term trends.
 
@@ -121,9 +121,9 @@ We can see from this graph, the rolling Z-score graph looks a lot smoother and l
 ---
 
 ## Conclusion
-It's clear that the two financial instruments that we are trading move very similarly, hence we can measure their spread from one another and treat it as a magenet to each other, always returning to some average and never deviating.
+It's clear that the two financial instruments that we are trading move very similarly, hence we can measure their spread from one another and treat it as a magnet to each other, always returning to some average and never deviating.
 
-We should use the spread of data from the two financial intruments and set indication z-values of +1 and -1, and see whether this gives us an effective profit, or even if we break even.
+We should use the spread of data from the two financial instruments and set indication z-values of +1 and -1, and see whether this gives us an effective profit, or even if we break even.
 
 If this does not work, we will research into other methods.
 
@@ -135,5 +135,5 @@ If this does not work, we will research into other methods.
 - Optimise this by getting moving averages involved
 
 
-### Resources used: 
+### Additional Resources used: 
 https://www.forexfactory.com/
