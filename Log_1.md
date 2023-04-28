@@ -24,7 +24,34 @@ But for a more practical resource, was surprisngly twitter. Where you would find
 
 What traders will do to start with is actually start by choosing the two intruments that are highly correlated. Even though the two instruments are given to us, there is no harm in checking their correlation. 
 
-First I calculated midpoint prices between the two intruments, to get an accurate picture of what the market prices would look like. Then used this to see how similar the intruments are. 
+First I calculated midpoint prices between the two intruments using the python package numpy, to get an accurate picture of what the market prices would look like. Then used this to see how similar the intruments are. 
 
-Here are the results: 
+```python
+
+# Read market data 1
+market_data1 = pd.read_csv("midpoint_log.txt")
+
+market_data1.columns = ['Instrument', 'Price']
+
+# Split dataframe into seperate instruments
+instrument0_midpoint_price = market_data1[market_data1['Instrument'] == 0]
+instrument1_midpoint_price = market_data1[market_data1['Instrument'] == 1] 
+
+instrument0_midpoint_price = instrument0_midpoint_price.reset_index()
+instrument0_midpoint_price = instrument0_midpoint_price['Price'][:-1]
+
+instrument1_midpoint_price = instrument1_midpoint_price.reset_index()
+instrument1_midpoint_price = instrument1_midpoint_price['Price']
+
+prices = pd.concat([instrument0_midpoint_price, instrument1_midpoint_price], axis=1)
+print(prices)
+
+print(prices.corr())
+
+```
+
+Here are the results:
+
+![correlation](./LOG1PICS/Corrrelation.png)
+
 
