@@ -116,7 +116,7 @@ Then if we look at the z score graph...
 
 ![rolling graph](./LOG1PICS/rollingZ.png)
 
-We can see from this graph, the rolling Z-score graph looks a lot smoother and less eratic, hence we can be more consistent with our trades in the future if we implement moving averages. 
+We can see from this graph, the rolling Z-score graph looks a lot smoother and less eratic, hence we can be more consistent with our trades in the ETFs and future contracts if we implement moving averages. 
 
 ---
 
@@ -133,8 +133,6 @@ If this does not work, we will research into other methods.
 - Figure out how to effectively buy and sell in the market
 - Use the z-score to get buy and sell signals
 - Optimise this by getting moving averages involved
-
-
 
 
 ### Resources used: 

@@ -1,178 +1,147 @@
-# Log 4 - Volume
+# Log 4 - Volume Continued
 
-  | Date | Branch | Commit |
-  |----------- | ----------- | ----------- |
-  | 27/04/2023 | volume_development | e3a888a |
+## Algorithm Update
+No updates to the algorithm code itself.
 
+My partner did gather some intelligence concerning the optimal pair of moving averages. Here are the results: 
+
+![zscore table](./LOG4PICS/movavg.png)
+
+We found that the sweet spot between the short term moving average and the long term moving average is one where they sit at a ratio of 0.05 to one another. And we want the moving average to really show what the market is telling us, so we want to keep the short term as short as possible (without losing its effectiveness), so a moving average of 5 and 100 seemed to be the best choice moving forward. So hopefully I can get that to work with the volume solution.
+
+![Original](./LOG4PICS/InitialRun.png)
 
 ---
-## Algorithm update:
-My partner has been tasked with comparing z-scores and has found that the optimal z-score indicator is now |1.25| as you can see in the following table.
 
-![zscore table](./LOG4PICS/z-score.png)
+## Log Goal
+1. To implement a more simplistic volume adjustment on the original algorithm. Minimise computation as much as possible. 
 
-
-Creating a new branch 'volume_development' which has this 
-
-Whilst he compares the most effective moving average pairs, I will try to implement some kind of volume adjustment. 
-
---- 
-
-## Log Goal:
-To optimise this algorithm by adjusting volume of trades
-
---- 
-
-## Research:
-
-When Adam and I first even mentioned optimisation, it was clear that volume was going to be a big factor in maximising our profit.
-
-Here are 3 different ways that we found volume can be manipulated in order to achieve our goals:
-
-1. **Buy the full amount of available volume:** If indicators show that the current market price is signalling a buy or sell, why not just order the full amount that is available. If our algorithm is solid and profitable, buying/selling the full amount should only lead to best possible outcome of that signal. (but of course it's not that simple)
-
-2. **Set a fixed trade size:** This is our current strategy. Setting a fixed trade size for each trade is one way to control the volume. For instance, you might decide to execute a pair trade with 100 shares of each stock. This strategy will guarantee consistency in your trades and make it simple for you to monitor your progress over time.
-
-3. **Adjust trade size based on probability of movement:** Another strategy is to modify your trade size in accordance with the z-score. You would create proportionality between the z-score and the volume of trade. i.e., the (modularly) higher the z-score the greater volume we buy since there is a greater probability that the market will move in our favour; a 'stronger signal' if you will. 
-
-So, since our lot limit is 100. That rules out buying the full availble volume since some trades go up to 10000 lots. So we will try to get a trade size proportional to the probability of movement instead. 
+2. Implement the moving averages
 
 ---
 
 ## Design
-The solution to adjusting trade size based on z-score comes down to two main decisions. 
 
-1. What type of proportionality it is. i.e. is it directly propositional with some constant (c). Or will it be exponentially proportional to some power constant (c)
-2. The magnitude of that constant (c)
-
-So, the plan would be to create an implementation of both proportions, and see what different magnitudes produce the most profitable solutions. 
-
-### Direct Proportion
-```python
-  INPUT: a z_score indicating some kind of signal, constant C, availableVolume 
-  OUTPUT: the volume of which we buy
-
-  #mod z-score, we only care about its maginitude of strength
-  z_score = |z_score|
-  #multiply by our constant
-  k = z_score*C
-
-  if k >= 1:
-    #definitaly need to buy full amount
-    #maybe even implement the idea of buying away from market price because the volume is simply not enough
-    VolumetoBuy = availbleVolume
-  else:
-    VolumetoBuy = availableVolume * k
-
-  return (VolumetoBuy)
-```
-### Exponential Proportion
-```python
-  INPUT: a z_score indicating some kind of signal, constant C, availableVolume 
-  OUTPUT: the volume of which we buy
-
-
-  z_score = |z_score|
-  #power by our constant, as long as our constant is less than 1 this works.
-  k = z_score**C
-
-  if k >= 1:
-    VolumetoBuy = availbleVolume
-  else:
-    VolumetoBuy = availableVolume * k
-
-  return (VolumetoBuy)
-```
+Throughout the debugging process of the previous volume solution, I noticed that the z-score was actually very jumpy. It does not gradually change from one value to another (since the market is so volatile). So when we do notice that the signal strength is high, we should act on it straight away, rather than waiting around to see if it will go higher, or lower.
 
 ---
 
 ## Implementation
 
-Before implementing the change in volumes a few issues came to mind:
-1. We have an active volume limit of 100, so having too many high lot trades will exceed that limit.
-2. Our current solution buys and sells as soon as it hits our z-score indication. Meaning the algorithm does not give it a chance to get to our extremer (stronger) values of z.
-3. Our current solution alternates between buying and selling signals.
+As previously done, when the z score is taken in, we see how strong the signal is.
 
-Therefore, I had to change the design as well as the way that we buy and sell positions.
+``` python
 
-The idea is that when the zscore breaks through our indication value and creates a trough, there are only a maximum of three orders put in at any one troph-time: 
-
-![zscore graph](./LOG4PICS/zgraph.png)
-
-Since the auto-trader automatically hedges values for us, it is rather unlickly that our position would exceed the lot limit and a given time, since it allows the buying and selling to cancel out (as long as the base lot size is not very high)
-
-So to implement this, I created a dictionary of data signals. To track what we have ordered on each troph:
-
-```python
-#see what troph we are located in
-if self.zscore < 0 and self.SellingTroph == True:
-  self.BuyingTroph = True
-  self.SellingTroph = False
-  #if we have entered the buying troph, we can make sell trades again
-  self.ActiveOrders.update({"StrongSell":False})
-  self.ActiveOrders.update({"MediumSell":False})
-  self.ActiveOrders.update({"LowSell":False})
-
-elif self.zscore > 0 and self.BuyingTroph == True:
-  self.SellingTroph = True
-  self.BuyingTroph = False
-  #if we have entered the selling troph, we can make buy trades again
-  self.ActiveOrders.update({"StrongBuy":False})
-  self.ActiveOrders.update({"MediumBuy":False})
-  self.ActiveOrders.update({"LowBuy":False})
-```
-
-Then we figure out how much volume we buy and sell at each signal:
-```python
-
-#the direct constant will be found by saying that the base lot-size will be traded at the lowest indicator
-K=LOT_SIZE/WEAK_INDICATOR
+#see the volume based on z score
+K=BASE_LOT_SIZE/LOW_INDICATOR
 if abs(self.zscore) >= STRONG_INDICATOR:
-  signal_strength = STRONG_INDICATOR
-  VolumeToBuy = K*STRONG_INDICATOR
+    VolumeToOrder = K*STRONG_INDICATOR
 elif abs(self.zscore) >= MEDIUM_INDICATOR:
-  signal_strength = MEDIUM_INDICATOR
-  VolumeToBuy = K*MEDIUM_INDICATOR
-else:
-  signal_strength = WEAK_INDICATOR
-  VolumeToBuy = K*WEAK_INDICATOR
+    VolumeToOrder = K*MEDIUM_INDICATOR
+elif abs(self.zscore) >= LOW_INDICATOR:
+    VolumeToOrder = K*LOW_INDICATOR
 
-VolumeToBuy = int(VolumeToBuy)
+VolumeToOrder = int(VolumeToOrder)
+
 ```
 
-I made the direct proportion constant in such a way that the Base LOT_SIZE is bought at the weakest indicator. Then proportionally goes up as the indicator gets stronger
+And then using the original code, I would alternate between buy and sell signals where the volume changes each time.
 
-Then we make it so it only can do each type of these trades once every troph:
+I also need to choose how I manage the price adjustment for each ask price and buy price. It makes sense to me to only adjust relative to the base lot since that is the lot I am trying to multiply:
+
+``` python
+price_adjustment = - (self.position // VolumeToOrder) * TICK_SIZE_IN_CENTS
+new_ask_price = ask_prices[0] + price_adjustment if ask_prices[0] != 0 else 0
+new_bid_price = bid_prices[0] + price_adjustment if bid_prices[0] != 0 else 0
+```
+
+I'll then see if setting the price adjustment relative to every volume change will work after this. 
+
+---
+## Results - Using Market_Data_2
+
+With the first implementation of having the base lot of 10 and having the price adjusted only to the base lot
+
+![10BASE LOT, price only adjusted to base lot](./LOG4PICS/10LOT-noPA.png)
+
+Now lets see what happens if we change the price compared to each individual lot volume we buy. But keep base lot to 10
+
+![10 BASE, price adjusted](./LOG4PICS/10LOT-PA-Variable.png)
+
+Now lets see what happens if we pump up that base lot to 20.
+
+![20 BASE, price adjusted](./LOG4PICS/20LOT-PA-Variable.png)
+
+Finally, some excitement! What a huge success
+
+Then we change the base lot to 40 and see what happens
+
+![40 BASE](./LOG4PICS/40LOT.png)
+
+What happened here is that we reached the lot limit way to quickly at the start so it was not profitable. Also, as it stands 40 is way to high, for strong signals it we were buying lot sizes of up to 80 and 100. So it is not efficient. 
+
+Lets try and change the volume to buy code a little bit.
+
+## Implementation 2
+
+``` python
+
+#see the volume based on z score
+K=10
+if abs(self.zscore) >= STRONG_INDICATOR:
+    VolumeToOrder = BASE_LOT_SIZE + 2*K
+elif abs(self.zscore) >= MEDIUM_INDICATOR:
+    VolumeToOrder = BASE_LOT_SIZE + K
+elif abs(self.zscore) >= LOW_INDICATOR:
+    VolumeToOrder = BASE_LOT_SIZE
+
+VolumeToOrder = int(VolumeToOrder)
+
+```
+
+## Result 2
+
+This is the result
+
+![40 BASE](./LOG4PICS/40LOT-new.png)
+
+I think if we go back to the original solution and use a base lot of 30. So we can really use the z-score effectively, since I think this is the best way to bullet proof values. 
+
+Unfortuntely, the results are not the best. 
+
+![30 BASE](./LOG4PICS/30LOT-PA.png)
+
+I believe this is due to the fact that having such a large lot size ask means that some trades won't actually go through because there is not enough volume avaible on the market.
 
 
 ---
-## Results
+## Conclusion
+In the end, I found that the more simple a solution, the more profitable it is. Adam and I decided to look at every single order individually, so speed is important in that situation. 
 
-Horrible.
+Ordering and playing around with too much volume will only lead to an increase risk of things going wrong and prices going out of control.
 
-![fill or kill](./LOG4PICS/fok.png) 
+With a manageable constant volume it allows us to guarantee consistency in our trades and make it simple for us to monitor our progress over time. And with such a quick changing market like this one, it is important to be as consistent as possible.
 
-At first, I thought it was due to a position limit. but even when changing the lot sizes to the most minimal numbers, this still did not allow the trades to go off as required. In the end, the issue is due to the type of orders being sent on the order book. The auto-trading platform offers the following type of orders.
+I am happy with the final product.
 
-1. Fill and Kill - orders trade immediately, if possible, otherwise they are cancelled
-2. Good-For-Day - Good for day orders remain in the market until they trade or are explicitly cancelled
+---
 
-And our orders are fill and kill. Meaning the price points change by the time all the computation is done, thus the orders get cancelled if the price fluctuates too much (since there is no immediate demand)
+## Evaluation of goals
+I think that through being obssessed with trading profitability and optimising our solution, we had forgotten one of the other key goals set out in the initial log; trading in such a monor which would invite more competition into the market.
 
-So, I simply tried to switch to good-for-day orders to allow the orders to... marinate...
+One way we could do this is by improving liquidity. If we could figure out a way to offer more prices in a profitable manor, and even more volume so that market participants increase. By attracting more traders in the market, you can increase liquidity and make it easier for everyone, including yourself, to buy and sell the ETF and future contracts.
 
-![good for day](./LOG4PICS/gfd.png)
+So deffinetly moving forward, it will be key to see how we can split up trades into multiple different signals in a profitable manor, and split up at different price points at high volumes. However, it will need to be noted that the futures contracts have a lot more volume than ETFs. 
 
-And of course, this is much worse since when we sell, we would be offering a consumer benefit price compared to the market. Similarly, when buying, we would be accepting at a producer benefit price (i.e just losing out on both ends)
-
-So it is not as simple as switching. 
 
 ## Next Steps
 
-I refuse to end on such a large negative (literally). 
+Though this is my final log, I will continue to play around and hopefully implement something I can use on actual markets. 
 
-Therefore I will do an additional log where I will go back to our original autotrader and try to implement volume adjucment but more in line with the original buying and selling strategy; where I think the careful implementation of alternating buy and sell signals is actually very advantagous for a profitibale strategy. 
+For next steps I believe I need to knuckle down on really understanding markets, and how I can manipulate them. 
 
+Looking back, I have been looking at my logs at a data-science angle. When actually, most of the issues I encountered was figuring out how orders in the market worked. I believe that the key to getting into the tens of thousands of dollars of profit comes down to knowing how to deal with order books and filing them in such a way that we can not only benefit from having a difference in price (some profit) but also setting the pace of the market to allow it to go into a direction which would further benefit our position. 
 
-### Resources used: 
-https://www.forexfactory.com/
+In thoery I understand why an algorithm would want to compete in such a way, it is just about how I would implement that in a practical way in any simulated market. I think that I will need to know how to control my orders in the future, rather than just filing them and then killing them, hoping for the best. 
+
+Adam and I are ready for next year...
