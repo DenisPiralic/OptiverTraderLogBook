@@ -9,8 +9,6 @@ My partner did gather some intelligence concerning the optimal pair of moving av
 
 We found that the sweet spot between the short term moving average and the long term moving average is one where they sit at a ratio of 0.05 to one another. And we want the moving average to really show what the market is telling us, so we want to keep the short term as short as possible (without losing its effectiveness), so a moving average of 5 and 100 seemed to be the best choice moving forward. So hopefully I can get that to work with the volume solution.
 
-This is the current results of having a constant lot size of 10 being bought at an indicator of 1.25
-
 ![Original](./LOG5PICS/InitialRun.png)
 
 ---
@@ -52,9 +50,9 @@ And then using the original code, I would alternate between buy and sell signals
 I also need to choose how I manage the price adjustment for each ask price and buy price. It makes sense to me to only adjust relative to the base lot since that is the lot I am trying to multiply:
 
 ``` python
-
-
-
+price_adjustment = - (self.position // VolumeToOrder) * TICK_SIZE_IN_CENTS
+new_ask_price = ask_prices[0] + price_adjustment if ask_prices[0] != 0 else 0
+new_bid_price = bid_prices[0] + price_adjustment if bid_prices[0] != 0 else 0
 ```
 
 I'll then see if setting the price adjustment relative to every volume change will work after this. 
@@ -111,18 +109,30 @@ I think if we go back to the original solution and use a base lot of 30. So we c
 
 Unfortuntely, the results are not the best. 
 
-![40 BASE](./LOG5PICS/30LOT-PA.png)
+![30 BASE](./LOG5PICS/30LOT-PA.png)
 
-In the end, the set up that produced the best result was one with base lot of 20.
-
-
-## Implementation 3
-
-Now lets implement a moving average to our solution, to hopefully get a concrete, profitible solution. 
-
+I believe this is due to the fact that having such a large lot size ask means that some trades won't actually go through because there is not enough volume avaible on the market.
 
 
 ---
+## Conclusion
+In the end, I found that the more simple a solution, the more profitable it is. Adam and I decided to look at every single order individually, so speed is important in that situation. 
+
+Ordering and playing around with too much volume will only lead to an increase risk of things going wrong and prices going out of control.
+
+With a manageable constant volume it allows us to guarantee consistency in our trades and make it simple for us to monitor our progress over time. And with such a quick changing market like this one, it is important to be as consistent as possible.
+
+I am happy with the final product. It is making some serious money.
+
+---
+
+## Evaluation of goals
+I think that through being obssessed with trading profitability and optimising our solution, we had forgotten one of the other key goals set out in the initial log; trading in such a monor which would invite more competition into the market.
+
+One way we could do this is by improving liquidity. If we could figure out a way to offer more prices in a profitable manor, and even more volume so that market participants increase. By attracting more traders in the market, you can increase liquidity and make it easier for everyone, including yourself, to buy and sell the ETF and future contracts.
+
+So deffinetly moving forward, it will be key to see how we can split up trades into multiple different signals in a profitable manor, and split up at different price points at high volumes. However, it will need to be noted that the futures contracts have a lot more volume than ETFs. 
+
 
 ## Next Steps
 
@@ -130,6 +140,6 @@ Though this is my final log, I will continue to play around and hopefully implem
 
 For next steps I believe I need to knuckle down on really understanding markets, and how I can manipulate them. 
 
-Looking back, I have been looking at my logs at a data-science angle. When actually, most of the issues I encountered was figuring out how orders in the market worked. 
+Looking back, I have been looking at my logs at a data-science angle. When actually, most of the issues I encountered was figuring out how orders in the market worked. I believe that the key to getting into the tens of thousands of dollars of profit comes down to knowing how to deal with order books and filing them in such a way that we can not only benefit from having a difference in price (some profit) but also setting the pace of the market to allow it to go into a direction which would further benefit our position. 
 
-So I need to research more thoroughly, how making orders on a market actually works. Then I can look at making 
+In thoery I understand why an algorithm would want to compete in such a way, it is just about how I would implement that in a practical way in any simulated market. 

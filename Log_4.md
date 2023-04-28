@@ -145,7 +145,6 @@ I made the direct proportion constant in such a way that the Base LOT_SIZE is bo
 Then we make it so it only can do each type of these trades once every troph:
 
 
-
 ---
 ## Results
 
